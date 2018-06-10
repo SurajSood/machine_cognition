@@ -8,9 +8,10 @@ import flask
 connection = sqlite3.connect('kb.db')
 cursor = connection.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS identity (uuid, fact);')
-cursor.execute('CREATE TABLE IF NOT EXISTS chronology (time, event);')
+cursor.execute('CREATE TABLE IF NOT EXISTS chronology (time, event);')  # conversation goes into chronology, for ex
 cursor.execute('CREATE TABLE IF NOT EXISTS people (uuid, person, fact);')
 cursor.execute('CREATE TABLE IF NOT EXISTS world (uuid, fact);')
+cursor.execute('CREATE TABLE IF NOT EXISTS stream (time, thought);')
 connection.commit()
 
 
@@ -100,6 +101,19 @@ def default():
         cursor.execute('DELETE FROM world WHERE uuid="%s";' % request['uuid'])
         print('deleting precious knowledge', payload)
         return json.dumps(payload)
+
+
+@app.route('/streamofconsciousness', methods=['PUT', 'GET', 'POST', 'DELETE'])
+def default():
+    request = flask.request
+    if request.method == 'PUT':
+        request = json.loads(request.data)
+        uid = uuid.uuid4()
+        values = (uid, request['thought'])
+        cursor.execute('INSERT INTO stream (time, thought) VALUES (?, ?);', values)
+        connection.commit()
+        print('ADDED FACT', values)
+        return uid
 
 
 if __name__ == '__main__':
