@@ -7,113 +7,48 @@ import flask
 
 connection = sqlite3.connect('kb.db')
 cursor = connection.cursor()
-cursor.execute('CREATE TABLE IF NOT EXISTS identity (uuid, fact);')
-cursor.execute('CREATE TABLE IF NOT EXISTS chronology (time, event);')  # conversation goes into chronology, for ex
-cursor.execute('CREATE TABLE IF NOT EXISTS people (uuid, person, fact);')
-cursor.execute('CREATE TABLE IF NOT EXISTS world (uuid, fact);')
-cursor.execute('CREATE TABLE IF NOT EXISTS stream (time, thought);')
+cursor.execute('CREATE TABLE IF NOT EXISTS identity (uuid, time, item);')
+cursor.execute('CREATE TABLE IF NOT EXISTS chronology (uuid, time, item);')  # conversation goes into chronology, for ex
+cursor.execute('CREATE TABLE IF NOT EXISTS people (uuid, time, item);')
+cursor.execute('CREATE TABLE IF NOT EXISTS world (uuid, time, item);')
+cursor.execute('CREATE TABLE IF NOT EXISTS stream (uuid, time, item);')
 connection.commit()
 
 
 app = flask.Flask(__name__)
 
 
-@app.route('/identity', methods=['PUT', 'GET'])
-def identity():
+@app.route('/kb', methods=['POST'])
+def default():
     request = flask.request
-    if request.method == 'PUT':
-        request = json.loads(request.data)
-        uid = str(uuid.uuid4())
-        values = (uid, request)
-        cursor.execute('INSERT INTO identity (uuid, fact) VALUES (?, ?);', values)
+    payload = json.loads(request.data)
+    print('INCOMING PAYLOAD', payload)
+
+    if payload['action'] == 'insert':
+        values = (str(uuid.uuid4()), str(time.time()), str(payload['item']))
+        cursor.execute('INSERT INTO %s (uuid, time, item) VALUES (?, ?, ?);' % payload['table'], values)
         connection.commit()
-        print('ADDED FACT', values)
-        return json.dumps({'result': 'success', 'uuid': uid})
-    elif request.method == 'GET':
-        results = cursor.execute('SELECT * FROM identity;').fetchall()
-        payload = [{'uuid': i[0], 'fact': i[1]} for i in results]
-        print('dumping personal identity')
-        return json.dumps(payload)
+        print('ADDED TO', payload['table'], values)
+        return json.dumps({'result': 'success', 'values': values})
 
+    elif payload['action'] == 'fetchall':
+        results = cursor.execute('SELECT * FROM %s;' % payload['table']).fetchall()
+        output = [{'uuid': i[0], 'time': i[1], 'item': i[2]} for i in results]
+        print('DUMPING ALL FROM', payload['table'])
+        return json.dumps(output)
 
-@app.route('/chronology', methods=['PUT', 'GET'])
-def chronology():
-    request = flask.request
-    if request.method == 'PUT':
-        request = json.loads(request.data)
-        t = time.time()
-        values = (t, request)
-        cursor.execute('INSERT INTO chronology (time, event) VALUES (?, ?);', values)
+    elif payload['action'] == 'delete':
+        delete = (payload['table'], payload['field'], payload['item'])
+        cursor.execute('DELETE FROM %s WHERE %s="%s";' % delete)
         connection.commit()
-        print('ADDED EVENT', values)
-        return json.dumps({'result': 'success', 'time': t})
-    elif request.method == 'GET':
-        results = cursor.execute('SELECT * FROM chronology;').fetchall()
-        payload = [{'time': i[0], 'event': i[1]} for i in results]
-        print('dumping personal chronology')
+        print('DELETION FROM', delete)
+        return json.dumps({'result': 'success', 'action': delete})
+
+    elif payload['action'] == 'search':
+        results = cursor.execute('SELECT * FROM %s WHERE %s LIKE ' % (payload['table'], payload['field']) + '"%' + payload['keyword'] + '%";')
+        payload = [{'uuid': i[0], 'time': i[1], 'item': i[2]} for i in results]
+        print('dumping search results')
         return json.dumps(payload)
-
-
-@app.route('/people', methods=['PUT', 'GET'])
-def people():
-    request = flask.request
-    if request.method == 'PUT':
-        request = json.loads(request.data)
-        uid = uuid.uuid4()
-        values = (uid, request['person'], request['fact'])
-        cursor.execute('INSERT INTO people (uuid, person, fact) VALUES (?, ?, ?);', values)
-        connection.commit()
-        print('ADDED FACT', values)
-        return json.dumps({'result': 'success', 'uuid': uid})
-    elif request.method == 'GET':
-        results = cursor.execute('SELECT * FROM people;').fetchall()
-        payload = [{'uuid': i[0], 'person': i[1], 'fact': i[2]} for i in results]
-        print('dumping people database')
-        return json.dumps(payload)
-
-
-@app.route('/world', methods=['PUT', 'GET', 'POST', 'DELETE'])
-def world():
-    request = flask.request
-    if request.method == 'PUT':
-        request = json.loads(request.data)
-        uid = uuid.uuid4()
-        values = (uid, request)
-        cursor.execute('INSERT INTO world (uuid, fact) VALUES (?, ?);', values)
-        connection.commit()
-        print('ADDED FACT', values)
-        return json.dumps({'result': 'success', 'uuid': uid})
-    elif request.method == 'GET':
-        results = cursor.execute('SELECT * FROM world;').fetchall()
-        payload = [{'uuid': i[0], 'fact': i[1]} for i in results]
-        print('dumping world knowledge')
-        return json.dumps(payload)
-    elif request.method == 'POST':
-        request = json.loads(request.data)
-        results = cursor.execute('SELECT * FROM world WHERE uuid="%s";' % request['uuid']).fetchall()
-        payload = [{'uuid': i[0], 'fact': i[1]} for i in results]
-        print('returning world knowledge query')
-        return json.dumps(payload)
-    elif request.method == 'DELETE':
-        request = json.loads(request.data)
-        results = cursor.execute('SELECT * FROM world WHERE uuid="%s";' % request['uuid']).fetchall()
-        payload = [{'uuid': i[0], 'fact': i[1]} for i in results]
-        cursor.execute('DELETE FROM world WHERE uuid="%s";' % request['uuid'])
-        print('deleting precious knowledge', payload)
-        return json.dumps(payload)
-
-
-@app.route('/streamofconsciousness', methods=['PUT', 'GET', 'POST', 'DELETE'])
-def stream():
-    request = flask.request
-    if request.method == 'PUT':
-        request = json.loads(request.data)
-        uid = uuid.uuid4()
-        values = (uid, request)
-        cursor.execute('INSERT INTO stream (time, thought) VALUES (?, ?);', values)
-        connection.commit()
-        print('ADDED FACT', values)
-        return json.dumps({'result': 'success', 'uuid': uid})
 
 
 if __name__ == '__main__':
