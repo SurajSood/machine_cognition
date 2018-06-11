@@ -19,16 +19,16 @@ app = flask.Flask(__name__)
 
 
 @app.route('/identity', methods=['PUT', 'GET'])
-def default():
+def identity():
     request = flask.request
     if request.method == 'PUT':
         request = json.loads(request.data)
-        uid = uuid.uuid4()
-        values = (uid, request['fact'])
+        uid = str(uuid.uuid4())
+        values = (uid, request)
         cursor.execute('INSERT INTO identity (uuid, fact) VALUES (?, ?);', values)
         connection.commit()
         print('ADDED FACT', values)
-        return uid
+        return json.dumps({'result': 'success', 'uuid': uid})
     elif request.method == 'GET':
         results = cursor.execute('SELECT * FROM identity;').fetchall()
         payload = [{'uuid': i[0], 'fact': i[1]} for i in results]
@@ -37,16 +37,16 @@ def default():
 
 
 @app.route('/chronology', methods=['PUT', 'GET'])
-def default():
+def chronology():
     request = flask.request
     if request.method == 'PUT':
         request = json.loads(request.data)
         t = time.time()
-        values = (t, request['event'])
+        values = (t, request)
         cursor.execute('INSERT INTO chronology (time, event) VALUES (?, ?);', values)
         connection.commit()
         print('ADDED EVENT', values)
-        return t
+        return json.dumps({'result': 'success', 'time': t})
     elif request.method == 'GET':
         results = cursor.execute('SELECT * FROM chronology;').fetchall()
         payload = [{'time': i[0], 'event': i[1]} for i in results]
@@ -55,7 +55,7 @@ def default():
 
 
 @app.route('/people', methods=['PUT', 'GET'])
-def default():
+def people():
     request = flask.request
     if request.method == 'PUT':
         request = json.loads(request.data)
@@ -64,7 +64,7 @@ def default():
         cursor.execute('INSERT INTO people (uuid, person, fact) VALUES (?, ?, ?);', values)
         connection.commit()
         print('ADDED FACT', values)
-        return uid
+        return json.dumps({'result': 'success', 'uuid': uid})
     elif request.method == 'GET':
         results = cursor.execute('SELECT * FROM people;').fetchall()
         payload = [{'uuid': i[0], 'person': i[1], 'fact': i[2]} for i in results]
@@ -73,16 +73,16 @@ def default():
 
 
 @app.route('/world', methods=['PUT', 'GET', 'POST', 'DELETE'])
-def default():
+def world():
     request = flask.request
     if request.method == 'PUT':
         request = json.loads(request.data)
         uid = uuid.uuid4()
-        values = (uid, request['fact'])
+        values = (uid, request)
         cursor.execute('INSERT INTO world (uuid, fact) VALUES (?, ?);', values)
         connection.commit()
         print('ADDED FACT', values)
-        return uid
+        return json.dumps({'result': 'success', 'uuid': uid})
     elif request.method == 'GET':
         results = cursor.execute('SELECT * FROM world;').fetchall()
         payload = [{'uuid': i[0], 'fact': i[1]} for i in results]
@@ -104,16 +104,16 @@ def default():
 
 
 @app.route('/streamofconsciousness', methods=['PUT', 'GET', 'POST', 'DELETE'])
-def default():
+def stream():
     request = flask.request
     if request.method == 'PUT':
         request = json.loads(request.data)
         uid = uuid.uuid4()
-        values = (uid, request['thought'])
+        values = (uid, request)
         cursor.execute('INSERT INTO stream (time, thought) VALUES (?, ?);', values)
         connection.commit()
         print('ADDED FACT', values)
-        return uid
+        return json.dumps({'result': 'success', 'uuid': uid})
 
 
 if __name__ == '__main__':

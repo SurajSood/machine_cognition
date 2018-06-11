@@ -1,7 +1,7 @@
 import requests
 import time
 
-core_constitution = [
+core_constitution = [  # this probably should be incorporated into personal identity
     'avoid causing harm or damage',
     'learn about the world, be curious',
     'be empathetic towards all life',
@@ -46,7 +46,7 @@ def develop_ideas(thoughts):
     return ideas
 
 
-def filter_and_prioritize(history, ideas):
+def filter_and_prioritize(context, ideas):
     """filtering and prioritizing are the second major component of executive cognitive reasoning
     while ideas are weighed and analyzed within the mind, tasks are ideas given intention and conviction
     this is the point at which ideas are translated into tasks
@@ -56,11 +56,22 @@ def filter_and_prioritize(history, ideas):
     return results
 
 
+def develop_plans(tasks):
+    """developing plans is where the ideas are matched with actual services and workflows available to the machine
+    as part of this processes, the necessary information is compiled for each service
+    for instance, a navigation or search service may need a direction, destination, or search goal
+    generally speaking, the necessary information should have been added when the corpus was compiled
+    however it may also take more NLP to parse out the specific objective from the corpus
+    a plan is simply a dictionary that contains the service as well as input variables for the service"""
+    plans = []
+    return plans
+
+
 if __name__ == '__main__':
     while True:
         context = examine_recent_history()  # TODO
-        thoughts = generate_thoughts(context)
+        thoughts = generate_thoughts(context)  # TODO
         ideas = develop_ideas(thoughts)  # TODO
         tasks = filter_and_prioritize(context, ideas)  # TODO
-        plans = develop_plans(tasks)
-        execute_tasks(plans)
+        plans = develop_plans(tasks)  # TODO
+        execute_tasks(plans)  # TODO
