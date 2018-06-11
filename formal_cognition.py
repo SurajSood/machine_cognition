@@ -1,13 +1,6 @@
 import requests
 import time
 
-core_constitution = [  # this probably should be incorporated into personal identity
-    'avoid causing harm or damage',
-    'learn about the world, be curious',
-    'be empathetic towards all life',
-    'solve scientific problems',
-]
-
 
 def examine_recent_history():
     """the purpose of examine recent history is to build a complete context
@@ -51,7 +44,8 @@ def filter_and_prioritize(context, ideas):
     while ideas are weighed and analyzed within the mind, tasks are ideas given intention and conviction
     this is the point at which ideas are translated into tasks
     to carry the example of using poison forward, with the negative value, the task would be 'do not use poison'
-    this might translate to an action 'put poison away' or merely a decision to vacate the thought"""
+    this might translate to an action 'put poison away' or merely a decision to vacate the thought
+    the personal identity table is the primary source for filtration and prioritization"""
     results = []
     return results
 
