@@ -28,27 +28,27 @@ def default():
         values = (str(uuid.uuid4()), str(time.time()), str(payload['item']))
         cursor.execute('INSERT INTO %s (uuid, time, item) VALUES (?, ?, ?);' % payload['table'], values)
         connection.commit()
-        print('ADDED TO', payload['table'], values)
         return json.dumps({'result': 'success', 'values': values})
+
+    elif payload['action'] == 'delete':
+        values = (payload['table'], payload['field'], payload['item'])
+        cursor.execute('DELETE FROM %s WHERE %s="%s";' % values)
+        connection.commit()
+        return json.dumps({'result': 'success', 'action': values})
+
+    elif payload['action'] == 'search_keyword':
+        values = (payload['table'], payload['keyword'])
+        results = cursor.execute('SELECT * FROM %s WHERE item LIKE "%%%s%%";' % values)
+        return json.dumps([{'uuid': i[0], 'time': i[1], 'item': i[2]} for i in results])
+
+    elif payload['action'] == 'search_time':
+        values = (payload['table'], payload['start'], payload['end'])
+        results = cursor.execute('SELECT * FROM %s WHERE time > "%s" AND time < "%s";' % values)
+        return json.dumps([{'uuid': i[0], 'time': i[1], 'item': i[2]} for i in results])
 
     elif payload['action'] == 'fetchall':
         results = cursor.execute('SELECT * FROM %s;' % payload['table']).fetchall()
-        output = [{'uuid': i[0], 'time': i[1], 'item': i[2]} for i in results]
-        print('DUMPING ALL FROM', payload['table'])
-        return json.dumps(output)
-
-    elif payload['action'] == 'delete':
-        delete = (payload['table'], payload['field'], payload['item'])
-        cursor.execute('DELETE FROM %s WHERE %s="%s";' % delete)
-        connection.commit()
-        print('DELETION FROM', delete)
-        return json.dumps({'result': 'success', 'action': delete})
-
-    elif payload['action'] == 'search':
-        results = cursor.execute('SELECT * FROM %s WHERE %s LIKE ' % (payload['table'], payload['field']) + '"%' + payload['keyword'] + '%";')
-        payload = [{'uuid': i[0], 'time': i[1], 'item': i[2]} for i in results]
-        print('dumping search results')
-        return json.dumps(payload)
+        return json.dumps([{'uuid': i[0], 'time': i[1], 'item': i[2]} for i in results])
 
 
 if __name__ == '__main__':

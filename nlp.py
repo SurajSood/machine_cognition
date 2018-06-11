@@ -70,4 +70,5 @@ def default():
 
 
 if __name__ == '__main__':
+    # need to simplify like kb service
     app.run(port=502)

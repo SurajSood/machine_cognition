@@ -1,5 +1,15 @@
+from pprint import pprint
 import requests
 import time
+import json
+
+kb_svc = 'http://127.0.0.1:501/kb'
+nlp_svc = 'http://127.0.0.1:501/nlp'
+
+
+def execute_post(url, payload):
+    response = requests.request(method='POST', url=url, json=payload)
+    return json.loads(response.text)
 
 
 def examine_recent_history():
@@ -9,6 +19,12 @@ def examine_recent_history():
     context statements may be as simple as 'i am outside'
     the sum total of context statements should create a complete picture of the machine's current experience"""
     context = []
+    # ex: 'david said go to the kitchen'
+    tables = ['chronology', 'stream']
+    for table in tables:
+        payload = {'action': 'search_time', 'table': table, 'start': str(time.time()-3600), 'end': str(time.time())}
+        data = execute_post(kb_svc, payload)
+        context.append(data)
     return context
 
 
@@ -19,6 +35,21 @@ def generate_thoughts(context):
     this simply means that items in the context are used to query the KB for more information
     in this way, a thought is the pairing of context and experience"""
     thoughts = []
+    for item in context:
+        payload = {'action': 'get_keywords', 'item': item['item']}
+        keywords = execute_post(nlp_svc, payload)
+        payload = {'action': 'generate_permutations', 'item': item['item']}
+        permutations = execute_post(nlp_svc, payload)
+        # need to filter out gibberish permutations at this point
+        # nlp_word_salad
+        for keyword in keywords:
+            payload = {'action': 'search_keyword', 'table': 'world', 'keyword': keyword}
+            thoughts.append(execute_post(kb_svc, payload))
+            payload = {'action': 'search_keyword', 'table': 'people', 'keyword': keyword}
+            thoughts.append(execute_post(kb_svc, payload))
+            payload = {'action': 'search_keyword', 'table': 'identity', 'keyword': keyword}
+            thoughts.append(execute_post(kb_svc, payload))
+    # ex. 'i should go to the kitchen'
     return thoughts
 
 
@@ -36,6 +67,9 @@ def develop_ideas(thoughts):
         prognosis = anticipate_results(corpus)  # TODO
         value = evaluate_prognosis(corpus, prognosis)  # TODO
         ideas.append({'corpus': corpus, 'prognosis': prognosis, 'value': value})
+    # ex: corpus: 'i will travel to/find/search for the kitchen; a kitchen is a place for cooking food... etc
+    # ex: prognosis: 'i will be located in a kitchen; i will see an oven and a microwave'
+    # ex: value: 'high; aligns with identity values'
     return ideas
 
 
@@ -47,6 +81,7 @@ def filter_and_prioritize(context, ideas):
     this might translate to an action 'put poison away' or merely a decision to vacate the thought
     the personal identity table is the primary source for filtration and prioritization"""
     results = []
+    # filtered list of ideas
     return results
 
 
@@ -58,12 +93,17 @@ def develop_plans(tasks):
     however it may also take more NLP to parse out the specific objective from the corpus
     a plan is simply a dictionary that contains the service as well as input variables for the service"""
     plans = []
+    # ex: task service: travel_search
+    # ex: search criteria: oven, microwave, pantry, food, cookware
+    # ex: success condition: criteria > %60
     return plans
 
 
 if __name__ == '__main__':
     while True:
         context = examine_recent_history()  # TODO
+        pprint(context)
+        exit()
         thoughts = generate_thoughts(context)  # TODO
         ideas = develop_ideas(thoughts)  # TODO
         tasks = filter_and_prioritize(context, ideas)  # TODO
