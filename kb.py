@@ -8,10 +8,8 @@ import flask
 connection = sqlite3.connect('kb.db')
 cursor = connection.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS identity (uuid, time, item);')
-cursor.execute('CREATE TABLE IF NOT EXISTS chronology (uuid, time, item);')  # conversation goes into chronology, for ex
-cursor.execute('CREATE TABLE IF NOT EXISTS people (uuid, time, item);')
-cursor.execute('CREATE TABLE IF NOT EXISTS world (uuid, time, item);')
-cursor.execute('CREATE TABLE IF NOT EXISTS stream (uuid, time, item);')
+cursor.execute('CREATE TABLE IF NOT EXISTS timeline (uuid, time, item);')
+cursor.execute('CREATE TABLE IF NOT EXISTS knowledge (uuid, time, item);')
 connection.commit()
 
 
@@ -31,8 +29,8 @@ def default():
         return json.dumps({'result': 'success', 'values': values})
 
     elif payload['action'] == 'delete':
-        values = (payload['table'], payload['field'], payload['item'])
-        cursor.execute('DELETE FROM %s WHERE %s="%s";' % values)
+        values = (payload['table'], payload['uuid'])
+        cursor.execute('DELETE FROM %s WHERE uuid="%s";' % values)
         connection.commit()
         return json.dumps({'result': 'success', 'action': values})
 

@@ -6,7 +6,8 @@ import requests
 kb_svc = 'http://127.0.0.1:501/kb'
 
 
-items = []
+items = ['i see an oven',
+         'my current location is indoors']
 
 
 def execute_post(url, payload):
@@ -45,5 +46,7 @@ def update_record(url, table, uuid, item):
 
 
 if __name__ == '__main__':
-    insert_record(kb_svc, 'world', items[0])
-    fetch_all_records(kb_svc, 'world')
+    table = 'timeline'
+    #for item in items:
+    #   insert_record(kb_svc, table, item)
+    fetch_all_records(kb_svc, table)
