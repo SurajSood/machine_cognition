@@ -1,40 +1,33 @@
-# cognitive chatbot experiment
-experimental conversational microservice for maragi
+# Executive Machine Cognition Experiment
 
-# hypothesis
+## TLDR
 
-my underlying assumption is that chatbots fundamentally lack an identity as well as the concept of theory of mind. i've created a KB microservice to handle this where there are several tables to handle accumulated knowledge about various aspects of the world. 
+I am using a combination of a particle filter and NLP to roughly approximate human cognition.
 
-# KB service
+## Thoughts, Ideas, and Creativity (Particles)
 
-## identity table
+In my model, a thought or an idea is a particle. In this case, a thought is a simple statement or question. For instance `the sky is gray right now`. This is an observational thought. Such thoughts can be generates from several different sources, such as object recognition or speech recognition. I've divided thoughts and ideas into several categories, although this is subject to change. 
 
-The identity table will record facts about the chatbot, specifically that it is a machine as well as more information pertaining specifically to its sense of self, its 'personality' and so on. 
+## Moral Core, Core Constitution, Personal Identity
 
-## chronology table
+I believe that personal identity and personal agency are prerequisites for general intelligence. One of the classes of thoughts I have defined is those of personal identity. These thoughts are baseline assertions about the sense of self. They encompass facts and beliefs about the self. For instance, `I am a machine` was one of the first facts I added to the personal identity table. This table also includes entries such as `I will never engage in violence`. This table serves as the primary device for filtration and prioritization of particles. 
 
-The chronology table is merely a logbook, recording events, decisions and observations with the context of time. This is meant to give the chatbot a linear sense of time. 
+## Particle Generation and Expansion
 
-## people table
+The initial particles are based strictly on recent experience. These are concrete inputs from the outside world. Various permutations of the particles are then generated with influence from recent thoughts, knowledge, and experience. Some of the thoughts include things such as state of being - `I am in the kitchen`. Other thoughts are more abstract, such as observations about others. As an example of what I mean by particle expansion, some likely particles to be generated from `I am in the kitchen` might include the following:
 
-My fundamental belief is that "theory of mind" is merely a collection of assertions and observations about a person. This table is meant to record such assertions. Over time, this data could be used to anticipate a person's wants and needs.
+* What am I doing in the kitchen? 
+* I should leave the kitchen
+* The kitchen is for making or preparing food
+* I could burn the kitchen down
 
-## world table
+I should also like to note that many particles are expected to be word salad - more or less completely random strings of words loosely inspired by the original thought. That is where filtration comes in.
 
-This is where encyclopedic knowledge about the world is recorded. This data will come from various sources. In some cases it will be looked up via various APIs, dictionaries, Wikis, and so on. In other cases it will be derived from conversation. The fundamental goal of this table is to be able to learn naturally over time. 
+## Particle Filtration
 
-# Convo service
+There will be several mechanisms used to filter particles. The first method will be to simply filter out those particles that are gibberish or nonsense. The second method will be to remove those particles that violate the personal identity. Those particles that remain should represent valid, workable possible choices and decisions. 
 
-This service is literally just to record conversational interactions. I said, you said, he said, she said. All with time context. 
+## Particle Prioritization
 
-# NLP service
+The chief (and only current) technique for prioritization of particles is to measure how closely particles align with the personal identity. There are many possible algorithms to use for this measurement so I will need to conduct some experiments. Once particles have been generated, filtered, and prioritized they will be stored in a stream of consciousness table. From there, they could be evaluated and acted upon by lower cognitive functions. 
 
-This is a service meant to provide many tools and utilities for the purposes of comprehending sentences. This is largely an interpretive service, meant to enumerate the most likely meanings of inbound sentences. 
-
-# Listening service
-
-This service periodically queries the convo service to look for new incoming sentences. Upon receiving a sentence it feeds it to the NLP service to gain better understanding of the intent. This service will also query the KB service to augment the meaning of the sentence, including context in time and conversation. Once the incoming sentence has been fully compiled it is passed to the speaking service.
-
-# Speaking service
-
-Upon receiving a sentence concept the speaking service works on compiling a response. It operates essentially by association and elimination. Using information gathered by the listening service, the speaking service prioritizes ideas and facts. Once the payload has been pared down, the list of remaining ideas and facts are passed to the NLP service to be compiled into meaningful sentences, at which point the speech is logged into the convo service and presented to the outside world (either via chat window or vocalization)
