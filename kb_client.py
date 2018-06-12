@@ -6,6 +6,9 @@ import requests
 kb_svc = 'http://127.0.0.1:501/kb'
 
 
+items = []
+
+
 def execute_post(url, payload):
     response = requests.request(method='POST', url=url, json=payload)
     pprint(json.loads(response.text))
@@ -42,4 +45,5 @@ def update_record(url, table, uuid, item):
 
 
 if __name__ == '__main__':
-    fetch_all_records(kb_svc, 'identity')
+    insert_record(kb_svc, 'world', items[0])
+    fetch_all_records(kb_svc, 'world')
