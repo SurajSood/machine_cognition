@@ -31,3 +31,18 @@ There will be several mechanisms used to filter particles. The first method will
 
 The chief (and only current) technique for prioritization of particles is to measure how closely particles align with the personal identity. There are many possible algorithms to use for this measurement so I will need to conduct some experiments. Once particles have been generated, filtered, and prioritized they will be stored in a stream of consciousness table. From there, they could be evaluated and acted upon by lower cognitive functions. 
 
+# Model of Cognition
+
+The model of cognition that I am working with is divided into roughly three tiers. 
+
+## Executive Cognition
+
+This experiment represents the uppermost tier of cognition. By 'uppermost' I mean that tier which is most abstracted from physical reality. Thoughts and ideas can exist completely independent of physical laws and limitations. Executive cognition is the thought that goes into high level decision making. This level of cognition happens exclusively in words. I have made this decision because using natural language and words immediately gives us tens of thousands of individual words and exponentially more ways to combine words to describe things and express ideas. 
+
+## Lower Cognition
+
+Lower cognition encompases cognitive functions that are more empirical or physical in nature. This includes things such as walking, speaking, grasping, and so on. These functions require some intelligence but are not themselves executive in nature. These functions are important problems to solve but are more of a means to an end. These types of cognition deal with converting numbers to words and vice versa. For instance, think about describing how you walk. You can articulate some aspects of walking, but many aspects of walking are simply beyond description. Those are aspects that you feel more than think. This is where the mind becomes abstracted away from the body. Lower cognition is the set of tools the mind has to interact with the body. 
+
+## Peripheral Cognition
+
+Peripheral cognition is where many domains of machine learning reside. This includes things like object recognition, classification and regression problems. These problems are closest to the 'real world'. These functions take raw data and/or information from the outside world and ascribe meaning to it. They take images and apply labels. They take sounds and apply labels. These describe the physical world around the machine. Peripheral cognition is the interfact between the mind and the outside world. 
