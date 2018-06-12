@@ -4,6 +4,8 @@
 
 I am using a combination of a particle filter and NLP to roughly approximate human cognition.
 
+![I should buy a boat](/boat_cat.jpg)
+
 ## Thoughts, Ideas, and Creativity (Particles)
 
 In my model, a thought or an idea is a particle. In this case, a thought is a simple statement or question. For instance `the sky is gray right now`. This is an observational thought. Such thoughts can be generates from several different sources, such as object recognition or speech recognition. I've divided thoughts and ideas into several categories, although this is subject to change. 
