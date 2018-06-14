@@ -17,6 +17,8 @@ def generate_particles(timeline):
     particles are 'thoughts' and 'ideas' based upon recent input and states of being
     """
     particles = []
+    for event in timeline:
+        print(event)
     return particles
 
 
