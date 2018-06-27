@@ -57,6 +57,9 @@ if __name__ == '__main__':
         i = [q.strip() for q in i]
         periods += i
 
+    for i in periods:
+        print(i)
+    exit()
     word_list = []
     for i in periods:
         i = i.lower()
@@ -85,22 +88,3 @@ if __name__ == '__main__':
     half = int(len(data) / 2)
     training = data[:half]
     test = data[half:]
-
-    model = SVC()
-    train_samples = [i[0] for i in training]
-    train_labels = [i[1] for i in training]
-    model.fit(train_samples, train_labels)
-
-    right = 0
-    wrong = 0
-    for i in test:
-        arr = np.asarray(i[0])
-        pred, = model.predict(arr.reshape(1, -1))
-        print(pred, i[1])
-        if pred == i[1]:
-            right += 1
-        else:
-            wrong += 1
-
-    total = right + wrong
-    print('accuracy', right / total)
