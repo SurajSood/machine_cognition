@@ -8,20 +8,37 @@ pos_index = ['CC', 'CD', 'DT', 'EX', 'FW', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD',
 
 
 train = [('i am a banana', 'declarative'),
-         ('what are you doing', 'interrogative'),
          ('the weather sure is nice today', 'declarative'),
-         ('who are you and how did you get here', 'interrogative'),
-         ('i cant believe that just happened', 'exclamatory'),
-         ('youre such an idiot', 'exclamatory'),
-         ('would you please go to the market and get me a bagel', 'interrogative'),
          ('the mitochondria is the powerhouse of the cell', 'declarative'),
-         ('what does the mitochondria do', 'interrogative')]
+         ('i cannot hold all these feelings because reasons', 'declarative'),
+         ('coastal waters tend to be shallow', 'declarative'),
+
+         ('who are you and how did you get here', 'interrogative'),
+         ('what are you doing', 'interrogative'),
+         ('would you please go to the market and get me a bagel', 'interrogative'),
+         ('what does the mitochondria do', 'interrogative'),
+         ('what do you call coastal water', 'interrogative'),
+
+         ('get away from me right now', 'imperative'),
+         ('do not ever do that again', 'imperative'),
+         ('put that gun down', 'imperative'),
+         ('never go outside by yourself', 'imperative'),
+         ('turn off the toaster and look at me', 'imperative')]
 
 test = [('what time is it', 'interrogative'),
         ('can you get me a beer', 'interrogative'),
-        ('it is a beautiful day', 'declarative'),
-        ('youre a tool', 'declarative'),
-        ('the hour grows late and gandalf the gray rides to rohan', 'declarative')]
+        ('what exactly do you think you are doing', 'interrogative'),
+        ('how do you know your own name', 'interrogative'),
+
+        ('I do not believe you', 'declarative'),
+        ('you cannot possibly be alive', 'declarative'),
+        ('this clock is quite broken', 'declarative'),
+        ('You are the kindest person I know', 'declarative'),
+
+        ('stop that', 'imperative'),
+        ('clean this up', 'imperative'),
+        ('cancel your subscription to netflix', 'imperative'),
+        ('drive the nail through the board', 'imperative')]
 
 
 def find_gradient(pos, tokens):
