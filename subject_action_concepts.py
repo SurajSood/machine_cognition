@@ -29,14 +29,14 @@ def compile_subject_concept(noun):
 
 
 if __name__ == '__main__':
-    #s = 'go to the kitchen'
-    s = 'what does it mean when i say go to the kitchen'
+    s = 'go to the kitchen'
     t = nltk.word_tokenize(s)
     p = nltk.pos_tag(t)
     for i in p:
         if i[1] == 'NN':
             concept = compile_subject_concept(i[0])
             pprint(concept)
+            # TODO filter concepts
         elif 'V' in i[1]:
             concept = compile_action_concept(i[0])
             pprint(concept)
