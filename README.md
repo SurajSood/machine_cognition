@@ -1,81 +1,85 @@
-# Executive Machine Cognition Experiment
+# Hypothesis
 
-## Hypothesis
+Human thought can be roughly approximated using words
 
-Creativity and problem-solving can be approximated by simulating the human behavior known as "brain-storming" and then filtration based upon semantic relationships between a premise and an 'idea'. Where the premise is a sentence representing the goal or purpose and the idea is a spontaneously generated sentence. 
+# Types of Knowledge
 
-### Examples
+## Encyclopedic Knowledge
 
-For instance, consider the statement "The automobile will not start" and "The automobile is out of gas". The relationship between these two statements is effect/cause. The second sentence is a possible explanation for the first.
+* "book learning"
+* Dictionary definitions
+* Abstract knowledge
 
-In this case, the first sentence could come from a human query or statement. The second sentence can easily be randomly created by generating random statements while using a KB system as a seed. 
+## Personal Experience
 
-This could work based on searching the KB for keywords - in thise case "automobile". Creating random permutations of a KB that contains facts such as "automobiles run on gasoline for fuel" could easily arrive at a statement such as "the automobile does not have fuel".
- 
-# Methods
+* First-hand observations
+* Hands-on experience
+* Long term and short term memory
 
-## Particle Generation aka "Brainstorming"
+# Cognitive Concepts
 
-Generate random sentences in three classes. 
+## Subject Concept
 
-* Interrogative
-* Declarative
-* Imperative
+* list of statements regarding a thing (topic, subject, event, etc)
+* composed of encyclopedic knowledge and extended by personal experience
+* can be used to keep track of thoughts and discussion points
+* can be refined over time (filtered and augmented)
 
-These random sentences can be compared to detected speech, memories, and personal morality for semantic relationships. The sentences should also be able to be created based upon an input seed. This will allow the generation of sentences related to a known topic.
+ex:
 
+`[kitchen; a place to cook and prepare food; a room in a house or structure; typically contains an oven, microwave, or stove; my home has a kitchen; i visited my kitchen two hours ago; my home kitchen is located at X,Y,Z]`
 
-## Particle Filtration
+## Action Concept
 
-Identify semantic relationship between two given sentences. Filter or rank sentences based on relevant criteria or given task. 
+* very similar to subject concept
+* focused on activities, methods and results
+* can also be modified over time
+* can be filtered or augmented based upon conversation, context, etc
 
-* Cause/Effect (Action/Result)
-* Antagonistic (Mutually exclusive?)
-* Question/Answer (Query/Response)
-* Similar meaning
-* Related topic
-* Unrelated
+ex:
 
-This will probably be best achieved by vectorizing sentences and training a deep neural network
+`[clean; to remove dirt, debris and/or sanitize; typically performed with a cleaning implement and solvent; One typically uses an ammonia based cleaner and papertowels to clean windows; a broom and dustpan can be used to clean the floor; a window is considered clean when it is highly transparent, free of smudges and streaks; a floor is considered clean when it is free of dust and debris]`
 
-# Data
+## Compiling Concepts
 
-## Knowledge
+Cognitive concepts can be compiled, filtered and augmented using several sources. 
 
-### Facts
+* KB article system
+* Encyclopedia system
+* Dictionary systems
+* Short term and long term memory system
+* Conversational NLP systems
 
-Examples 
+### Methods
 
-Subject | Verb | State
---- | --- | ---
-the sky | is | blue
-bacon | is | meat
-I | am | human
-kitchen | contains | sink
-house | does not contain | giraffe
-automobiles | require | gasoline
+Compiling concepts is relatively easy. There are several methods by which this can be done quickly and efficiently.
 
-### Explanations
+* Query sources for keywords, prioritize based upon recency
+* Look up definitions, synonyms, hypernyms, hyponyms, and antonyms
+* Augmenting concepts is roughly the same behavior as compiling concepts, just with more material already in place
 
-Fact | Rule | Reason
---- | --- | ---
-the sky is blue | because of | nitrogren in the atmosphere
-kitchen contains sink | for the purpose of | washing dishes
-automobiles are made of steel | because | steel is strong and cheap
-automobiles use gasoline | for the purpose of | chemical fuel for their internal combustion engine
+## Filtering Concepts
 
-## Perception
+Filtering cognitive concepts is highly critical as many words carry a lot of ambiguity and it is necessary to refine ideas during the course of conversation and to function independently. Filtering concepts is a bit more difficult.
 
-### Sight
+### Methods
 
-Label | Class | Description | Identity
---- | --- | --- | ---
-House | Building, structure | Burgundy, ranch style | My home
-Dog | Animal, canine | Furry, german shepard | My dog named Bingo
+* Filter based on recency - in cases of ambiguity, favor terms and statements more similar to recent information
+* Filter based on context - use broader context of conversation and surroundings to remove elements of a concept that are not relevant
+* Filter based on conversation - talk about concepts and ask for clarification (also used for augmenting concepts)
 
-### Sound
+# Concepts in Conversation
 
-Label | Value | Description | Source
---- | --- | --- | ---
-Speech | Go to the kitchen | Shouting, male | Person, human
-Siren | emergency response vehicle | typical of American police cruiser | outside, distant
+The purpose of the concept is to enable a machine to have a cohesive continuity of thought during a conversation.
+
+Subject concepts can act as an organizational structure, roughly approximating short term memory during the course of a conversation. Concepts can be compiled and filtered autonomically by a MARAGI machine and then referenced as needed for dialog generation.
+
+For example, if during the course of a conversation, a person informs you that they were born in Sweden, this fact can be added to a subject concept centered around that person. Thus, if they later refer to where they grew up, it can be inferred by the machine, using this concept, that they grew up in Sweden.
+
+# Concepts in Planning
+
+The purpose of action concepts is to map out actions, tasks, and plans in natural language such that they can be communicated and evaluated into real actions.
+
+In the same way that subject concepts can serve as a vessel for short term memory while compiling and trimming (filtering) statements from a subject, so to can action concepts be refined when compiling and communicating tasks. The ability to dynamically compile and understand tasks is a critical function for general purpose robotics e.g. MARAGI
+
+The action concept is a way for a machine to hold, in abstract, a task before executing so that the concept can be discussed and evaluated before being acted upon. This is necessary to handle the large degree of ambiguity in simple commands. It allows a MARAGI user to include things in the concept such as methods and definitions of done. Refer to the above concept of cleaning. 
